@@ -106,19 +106,15 @@ def itinerary_agent(state:TravelState):
     }
 
 def final_agent(state:TravelState):
-    final_prompt="""
+    final_prompt=f"""
     Generate the final response for the user.
-    User Request:
-{state['user_query']}
+    User Request: {state['user_query']}
 
-Flights:
-{state['flight_results']}
+    Flights: {state['flight_results']}
 
-Hotels:
-{state['hotel_results']}
+    Hotels: {state['hotel_results']}
 
-Itinerary:
-{state['itinerary']}
+    Itinerary: {state['itinerary']}
 
 Format the final answer beautifully using these sections:
 
@@ -133,6 +129,9 @@ Important:
 - Be clear and practical.
 - Mention that live flight API may not provide ticket prices if pricing is unavailable.
 - Keep the response useful for real travel planning.
+- Use only the flight details provided above; do not invent flight options or booking details.
+- Never output template placeholders such as [Departure City], [Airline Name], or [Departure Date and Time].
+- If flight details are missing, say they are unavailable and ask the user for the needed details.
 """
 
     response = llm.invoke([
